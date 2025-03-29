@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  python-env:
+    build:
+      context: .
+      dockerfile: ./dockerfile
+    volumes:
+      - ../:/workspaces
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    networks:
+      llm-network:
+
+  ollama-service:
+    build:
+      context: .
+      dockerfile: ./deepseek-r1.014b.dockerfile
+    ports:
+      - 11434:11434
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+    command: sleep infinity
+    networks:
+      llm-network:
+
+networks:
+  llm-network:
+    # driver: bridge
