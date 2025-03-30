@@ -21,6 +21,13 @@ services:
     command: sleep infinity
     networks:
       llm-network:
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: ["gpu"]
+            count: all
 
 networks:
   llm-network:
