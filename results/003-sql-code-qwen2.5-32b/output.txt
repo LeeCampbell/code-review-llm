@@ -1,0 +1,103 @@
+vscode ➜ /workspaces (qwen2.5-coder) $ time python ./python/code_review.py 
+200
+model            :qwen2.5-coder:32b
+total_duration   :580227804486
+prompt_eval_count: 2048
+eval_count       : 1084
+
+Your SQL query is quite comprehensive and well-structured, aiming to gather detailed information about players who have won jackpots across different brands (CHU, POK, LLS) and filter them based on their latest state of residence. Here are some key points and suggestions for improvement:
+
+### Key Points:
+1. **Data Aggregation**: The query aggregates data from multiple tables in different schemas (`CHU_PROD`, `POK_PROD`, `LLS_PROD`) to create a unified view.
+2. **State Determination**: It determines the most trusted state of residence per user based on address types (CDD, SDD, Billing).
+3. **Latest State Information**: Uses row number partitioning to get the latest state information.
+4. **Final Selection**: Selects relevant fields from the final aggregated table.
+
+### Suggestions for Improvement:
+1. **Indexing**: Ensure that the tables are indexed properly on columns used in `JOIN` conditions and `WHERE` clauses (e.g., `account_id`, `brand_code`, `valid_from_timestamp_utc`).
+2. **Performance**: Use `EXPLAIN PLAN` to analyze query performance and identify potential bottlenecks.
+3. **Comments**: Add more comments to explain the purpose of each subquery, especially complex ones like `player_state`.
+4. **Error Handling**: Consider adding error handling if your SQL environment supports it, to manage any unexpected issues during execution.
+
+### Example of Adding Comments:
+```sql
+-- Aggregate jackpots won by players across different brands
+WITH all_winners AS (
+    SELECT * FROM chu_winners
+    UNION ALL
+    SELECT * FROM pok_winners
+    UNION ALL
+    SELECT * FROM lls_winners
+),
+
+-- Get distinct winners with their brand codes
+distinct_winners AS (
+    SELECT DISTINCT user_id, BRAND_CODE
+    FROM all_winners
+),
+
+-- Determine the most trusted state of residence for each player per brand
+player_state AS (
+    -- Subquery to get latest address information per account and address type
+    WITH latest_address AS (
+        SELECT
+            s.account_id,
+            s.BRAND_CODE,
+            UPPER(s.state) AS STATE,
+            CASE
+                WHEN s.address_type = 'CDD' THEN 1
+                WHEN s.address_type = 'SDD' THEN 2
+                WHEN s.address_type = 'Billing (Bank)' THEN 3
+                ELSE 4 END AS type_rank
+        FROM (
+            SELECT account_id, BRAND_CODE, address_type, ADDRESS_SUBDIVISION_CODE AS state,
+                   valid_from_timestamp_utc, valid_to_timestamp_utc
+            FROM CHU_PROD.CURATED.V_ACCOUNT_CONTACT_ADDRESS
+            QUALIFY ROW_NUMBER() OVER (PARTITION BY account_id, address_type ORDER BY valid_from_timestamp_utc DESC) = 1
+            UNION ALL
+            SELECT account_id, BRAND_CODE, address_type, ADDRESS_SUBDIVISION_CODE AS state,
+                   valid_from_timestamp_utc, VALID_TILL_TIMESTAMP_UTC
+            FROM POK_PROD.CURATED.V_ACCOUNT_CONTACT_ADDRESS
+            QUALIFY ROW_NUMBER() OVER (PARTITION BY account_id, address_type ORDER BY valid_from_timestamp_utc DESC) = 1
+        ) s
+        INNER JOIN distinct_winners dw ON s.account_id = dw.user_id AND s.BRAND_CODE = dw.brand_code
+    )
+    -- Get the most trusted state per user
+    SELECT chupok.account_id, chupok.BRAND_CODE, chupok.STATE
+    FROM (
+        SELECT account_id, BRAND_CODE, STATE, type_rank,
+               ROW_NUMBER() OVER (PARTITION BY account_id, BRAND_CODE ORDER BY type_rank) AS rn
+        FROM latest_address
+    ) chupok
+    WHERE chupok.rn = 1
+
+    UNION ALL
+
+    -- Get state information for LLS based on GEO code
+    SELECT v.ACCOUNT_ID, 'LLS' AS BRAND_CODE, v.GEO_LOCATION_SUBDIVISION_CODE AS STATE
+    FROM LLS_PROD.CURATED.V_IDENTITY_LOGIN v
+    INNER JOIN distinct_winners dw ON v.account_id = dw.user_id
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY ACCOUNT_ID ORDER BY LOGIN_TIMESTAMP_UTC DESC) = 1
+),
+
+-- Final aggregation of winners with their state information
+winners_final AS (
+    SELECT aw.BRAND_CODE, DATE, cast(aw.USER_ID AS STRING) AS user_id,
+           cast(ps.STATE AS STRING) AS STATE, TIER_JACKPOT_WIN, cast(aw.PLAY_ID AS STRING) AS PLAY_ID,
+           SC_PLAY_AMOUNT, SC_WIN_AMOUNT, cast(aw.GAME_NAME AS STRING) AS GAME_NAME
+    FROM all_winners aw
+    LEFT JOIN player_state ps ON aw.USER_ID = ps.account_id AND aw.brand_code = ps.BRAND_CODE
+)
+
+-- Select the final output
+SELECT "BRAND_CODE", "DATE", "GAME_NAME", "PLAY_ID",
+       "SC_PLAY_AMOUNT", "SC_WIN_AMOUNT", "STATE", TIER_JACKPOT_WIN
+FROM winners_final;
+```
+
+### Conclusion:
+Your query is robust and covers the essential aspects of aggregating and filtering data. With some enhancements in indexing, performance analysis, comments, and error handling, it can be made even more efficient and maintainable.
+
+real    9m40.385s
+user    0m0.099s
+sys     0m0.000s
