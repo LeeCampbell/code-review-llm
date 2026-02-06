@@ -1,2 +1,7 @@
 # General
 .DS_Store
+
+# Environment files with secrets
+.env
+.env.local
+.env.*.local
