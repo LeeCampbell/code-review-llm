@@ -17,6 +17,8 @@ Most production incidents originate at integration points between services. As M
   - Are circuit breaker states observable (metrics, logs)?
 - [ ] **Bulkhead**: Are failure domains isolated?
   - Are thread pools / connection pools separated per dependency?
+  - Are queue depths bounded per consumer?
+  - Are memory limits set per component?
   - Can one failing dependency exhaust resources for all?
   - Are critical and non-critical paths isolated?
 - [ ] **Timeout**: Do all inter-service calls have explicit timeouts?
@@ -35,11 +37,10 @@ Most production incidents originate at integration points between services. As M
   - Do health checks verify dependency availability?
   - Do services refuse traffic if not ready (readiness probe)?
   - Are known-bad requests rejected immediately (validation)?
-- [ ] **Governor**: Are there limits on resource consumption?
-  - Connection pool sizes defined and bounded?
-  - Thread pool sizes defined and bounded?
-  - Queue depths limited?
-  - Memory limits set?
+- [ ] **Governor**: Are there rate limits controlling execution speed?
+  - Are API call rates capped (requests/sec, calls/min)?
+  - Are batch sizes bounded to prevent overwhelming downstream services?
+  - Are concurrent operation limits enforced?
 
 ### API Contracts & Communication
 
@@ -51,6 +52,7 @@ Most production incidents originate at integration points between services. As M
   - Are new fields additive (not replacing)?
   - Are removed fields deprecated first?
   - Is there a versioning strategy (URL, header, content negotiation)?
+  - Is Postel's Law applied? ("Be conservative in what you send, liberal in what you accept" — services should tolerate unknown fields and unexpected values from peers)
 - [ ] **Idempotency**: Are operations idempotent where needed?
   - Can retries cause duplicate side effects?
   - Are idempotency keys supported for mutations?

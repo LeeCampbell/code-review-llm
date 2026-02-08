@@ -55,7 +55,7 @@ Not every project operates at all zoom levels:
 | Term | Definition |
 | ---- | ---------- |
 | **Circuit Breaker** | A pattern that stops calling a failing dependency after a threshold, allowing recovery |
-| **Bulkhead** | Compartmentalization to isolate failures and prevent cascading |
+| **Bulkhead** | Compartmentalization to isolate failures and prevent cascading (separate connection pools, thread pools, queue depths per dependency) |
 | **Shed Load** | Rejecting excess work to protect system stability under overload |
 | **Backpressure** | Mechanism for consumers to signal producers to slow down |
 | **Governor** | A rate-limiting mechanism that controls how fast operations execute (requests/sec, calls/min) |
