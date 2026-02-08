@@ -78,6 +78,25 @@ Individual services can be well-designed but the landscape can still be a mess. 
   - What is the deprecation timeline?
   - How many versions are supported concurrently?
 
+### Design Documentation Traceability
+
+- [ ] **Technical Specification**: Is there a tech-spec, design doc, or equivalent that captures the current intended design?
+  - Does a document like `tech-spec.md`, `DESIGN.md`, or equivalent exist?
+  - Does it describe the system's intended architecture, key components, and their interactions?
+  - Is it stored in version control alongside the code?
+- [ ] **ADR-to-Spec Alignment**: Are ADR decisions reflected in the technical specification?
+  - When an ADR is accepted, is the tech-spec updated to incorporate the decision?
+  - Are there ADRs whose decisions contradict or are absent from the tech-spec?
+  - When an ADR is superseded, is the tech-spec updated accordingly?
+- [ ] **Spec-to-Code Compliance**: Does the code implement what the tech-spec describes?
+  - Do the architectural patterns in code match the tech-spec?
+  - Are there components described in the tech-spec that don't exist in code (or vice versa)?
+  - Are the integration patterns used in code consistent with what's documented?
+- [ ] **Decision Freshness**: Is documentation kept current?
+  - Does the tech-spec reflect the latest accepted ADRs?
+  - Are there recent code changes that aren't reflected in documentation?
+  - Is there a process or reminder to update docs when architecture changes?
+
 ### Evolution & Change Management
 
 - [ ] **Backward Compatibility**: Can systems evolve independently?
@@ -122,6 +141,12 @@ Individual services can be well-designed but the landscape can still be a mess. 
 - **Golden hammer**: Same technology for every problem
   - Signs: Using Kafka for request/response, REST for event streaming
   - Fix: Choose patterns that match the problem
+- **Stale documentation**: Tech-spec or design docs that don't match the current codebase
+  - Signs: ADRs accepted but tech-spec unchanged, code diverged from documented design
+  - Fix: Update tech-spec as part of ADR acceptance, periodic doc-code reconciliation
+- **Undocumented drift**: Code evolved beyond what any ADR or spec describes
+  - Signs: Major architectural patterns in code with no corresponding documentation
+  - Fix: Backfill ADRs for significant existing decisions, update tech-spec
 
 ### LOW Severity
 

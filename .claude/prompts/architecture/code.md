@@ -51,6 +51,9 @@ Code-level quality is the foundation of all higher-level architecture. Poorly st
   - Are dependencies injectable?
   - Are side effects isolated behind interfaces?
   - Can the code be tested without a database, network, or filesystem?
+  - Do tests exist alongside the code? (test files, test directories)
+  - Is there evidence of verification at multiple levels? (unit tests for correctness, integration/acceptance tests for behavior)
+  - Are test names descriptive of the behavior they verify?
 - [ ] **Complexity**: Is cyclomatic complexity reasonable?
   - Are methods short and focused (prefer < 20 lines)?
   - Are deeply nested conditionals flattened (guard clauses, early returns)?
@@ -65,6 +68,12 @@ Code-level quality is the foundation of all higher-level architecture. Poorly st
 - [ ] **Naming**: Do names reflect the domain (ubiquitous language)?
   - Would a domain expert recognize the names?
   - Are technical implementation names kept out of the domain layer?
+  - Is the same concept referred to by one consistent name? (e.g., not "Portfolio" in one place, "Orders" in another, "Basket" in a third)
+  - Are synonyms eliminated? Each domain concept should have exactly one name used everywhere.
+- [ ] **Language Conventions**: Does the code follow the naming and style conventions of its language?
+  - Are naming patterns idiomatic? (e.g., PascalCase for C# types, camelCase for Java methods, snake_case for Python)
+  - Are conventions from one language ecosystem leaking into another?
+  - Does the project have a consistent style within its own codebase?
 - [ ] **DRY/YAGNI**: Is there the right level of abstraction?
   - Is logic duplicated across multiple locations?
   - Are there abstractions that only have one implementation (premature)?
