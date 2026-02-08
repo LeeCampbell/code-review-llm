@@ -102,7 +102,7 @@ Individual services can be well-designed but the landscape can still be a mess. 
 - [ ] **Backward Compatibility**: Can systems evolve independently?
   - Can service A be updated without updating service B?
   - Are wire formats (JSON, Protobuf) extensible?
-  - Is the Postel's Law applied? ("Be conservative in what you send, liberal in what you accept")
+  - Is Tolerant Reader applied? (Ignore unknown fields, don't fail on extra data)
 - [ ] **Deprecation Process**: Is there a clear path for retiring old interfaces?
   - Are deprecated endpoints marked with headers/annotations?
   - Is there a sunset date communicated to consumers?
@@ -151,6 +151,7 @@ Individual services can be well-designed but the landscape can still be a mess. 
 ### LOW Severity
 
 - **No fitness functions**: Architecture drifts unchecked
+  - Severity should be **MEDIUM** if architectural standards exist but aren't enforced
   - Signs: Layer violations, unexpected dependencies appearing over time
   - Fix: Automated architecture tests in CI
 - **Inconsistent API styles**: REST for some, gRPC for others, no pattern

@@ -58,7 +58,7 @@ Not every project operates at all zoom levels:
 | **Bulkhead** | Compartmentalization to isolate failures and prevent cascading |
 | **Shed Load** | Rejecting excess work to protect system stability under overload |
 | **Backpressure** | Mechanism for consumers to signal producers to slow down |
-| **Governor** | A limit on resource consumption (connection pools, thread pools, queue depths) |
+| **Governor** | A rate-limiting mechanism that controls how fast operations execute (requests/sec, calls/min) |
 | **Dogpile** | Thundering herd problem when many clients simultaneously retry or recache |
 
 ### Integration (EIP)
