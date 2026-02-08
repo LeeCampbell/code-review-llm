@@ -41,6 +41,9 @@ Read the detailed checklist from `.claude/prompts/architecture/landscape.md`.
 - Point-to-point spaghetti integration
 - No fitness functions (silent architecture erosion)
 - Golden hammer (same technology for every problem)
+- Stale or missing tech-spec / design documentation
+- ADR decisions not reflected in code
+- Code patterns that contradict documented architecture
 
 ## Scaling Note
 
