@@ -43,7 +43,7 @@ This review framework synthesizes principles from:
 | Term | Definition |
 | ---- | ---------- |
 | **CDC** | Change Data Capture - capturing only changed records for efficient incremental processing |
-| **Deadly Diamonds** | Split-brain scenarios where data processed via different paths arrives in inconsistent states |
+| **Deadly Diamonds** | A DAG pattern where data reaches a target via multiple independent paths, causing inconsistency (timing skew) or metric inflation (multiple join paths to the same dimension) |
 | **Idempotency** | Property where re-running a process with the same input produces the exact same output |
 | **Watermark** | A timestamp or version marker used to track processing progress for incremental loads |
 

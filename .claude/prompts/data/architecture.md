@@ -54,13 +54,33 @@ Poor data architecture creates technical debt that compounds over time. Schema d
 ### HIGH Severity
 
 ```sql
--- Tight coupling across domains
+-- Tight coupling: query reaches across schema boundaries into other domains
 SELECT o.*, c.*, p.*, i.*
-FROM orders o
-JOIN customers c ON o.customer_id = c.id      -- Customer domain
-JOIN products p ON o.product_id = p.id        -- Product domain
-JOIN inventory i ON p.id = i.product_id       -- Inventory domain
--- This query spans 4 domains - creates deadly diamond risk
+FROM sales.orders o
+JOIN customer_service.customers c ON o.customer_id = c.id  -- Customer domain
+JOIN marketing.products p ON o.product_id = p.id           -- Product domain
+JOIN warehouse.inventory i ON p.id = i.product_id          -- Inventory domain
+-- If any domain changes its internal schema, this query breaks.
+-- Consume from published data contracts instead of internal tables.
+```
+
+```sql
+-- Deadly diamond: same order data arrives via two paths with different timing
+--
+--   raw.orders ──→ enrichment.order_details ──→ analytics.daily_revenue
+--       │                                            ↑
+--       └────→ fraud.scored_orders ──────────────────┘
+--
+-- Path A (enrichment) completes in minutes. Path B (fraud scoring) takes hours.
+-- If daily_revenue reads from both, it sees today's enriched orders but
+-- yesterday's fraud scores — totals are wrong, fraud flags are stale.
+INSERT INTO analytics.daily_revenue
+SELECT d.order_id, d.amount, f.fraud_score
+FROM enrichment.order_details d
+JOIN fraud.scored_orders f ON d.order_id = f.order_id
+WHERE d.order_date = CURRENT_DATE;
+-- Fix: declare both paths as upstream dependencies so the target only
+-- runs when both have completed for the same partition.
 ```
 
 ```sql

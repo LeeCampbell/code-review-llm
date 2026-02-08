@@ -132,7 +132,8 @@ expect_compound_columns_to_be_unique(column_list=["customer_id", "order_date"])
 
 # Freshness (custom)
 expect_column_max_to_be_between(column="event_timestamp",
-    min_value=datetime.now() - timedelta(hours=1))
+    min_value=datetime.now() - timedelta(hours=1),
+    max_value=datetime.now())
 ```
 
 ## Questions to Ask
