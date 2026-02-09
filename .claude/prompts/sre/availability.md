@@ -49,7 +49,7 @@ A 99.9% SLO means you have 8.7 hours of downtime budget per year. Every code cha
 | **Shared fate** | If this fails, what else fails? Is the blast radius acceptable? Are there shared connection pools, caches, or queues that create coupling? |
 | **Excessive load** | What happens at 10x traffic? Is there fan-out that amplifies load? Are there retry storms waiting to happen? |
 | **Excessive latency** | What's the worst-case latency? Are there unbounded operations (full table scans, unlimited pagination)? |
-| **SPOF** | What's the redundancy story? Can this run in multiple regions/zones? What state needs to be replicated? |
+| **Single points of failure** | What's the redundancy story? Can this run in multiple regions/zones? What state needs to be replicated? |
 
 ## FaCTOR Deep Dive for Availability
 
