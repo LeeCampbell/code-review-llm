@@ -77,13 +77,47 @@ This review framework synthesizes principles from:
 
 ---
 
+## Maturity Model
+
+Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+
+| Level | Criteria for Data |
+|-------|------------------|
+| **Hygiene** | No missing PII masking in outputs or logs. No breaking schema changes without versioning. No silent data loss (dropped records without error). No unhandled nulls in joins or aggregations. |
+| **Level 1 — Foundations** | Schema documented with field descriptions. Ownership defined for each data asset. Basic data validation (type checks, not-null constraints, referential integrity). Idempotent processing for all pipelines. |
+| **Level 2 — Operational Maturity** | Freshness SLOs defined and monitored. Data contracts between producers and consumers. Lineage tracked from source to consumption. Quality monitoring with automated anomaly detection. Reconciliation between source and target. |
+| **Level 3 — Excellence** | Bitemporality for audit-critical data. Self-serve discovery catalog. Automated reconciliation with alerting. Data mesh patterns — domain-owned data products with interoperability standards. |
+
+### Tagging Rules
+
+For each finding, add a `Maturity` column to your output table:
+
+- `HYG` — Hygiene violation (baseline safety failure)
+- `L1` — Level 1 criteria gap
+- `L2` — Level 2 criteria gap
+- `L3` — Level 3 criteria gap
+
+### Criteria Assessment
+
+After your findings table, add a **Maturity Assessment** section:
+
+For each criterion at each level, state:
+
+- ✅ **Met** — Evidence found in code (cite location)
+- ❌ **Not met** — What's missing (cite what should exist)
+- ⚠️ **Partially met** — Some evidence, gaps remain
+
+Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+
+---
+
 ## Output Format
 
 Present findings as:
 
-| Severity | Pillar | Location | Finding | Recommendation |
-| -------- | ------ | -------- | ------- | -------------- |
-| HIGH/MED/LOW | Arch/Eng/Quality/Gov | file:line | What's wrong | How to fix |
+| Severity | Maturity | Pillar | Location | Finding | Recommendation |
+| -------- | -------- | ------ | -------- | ------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Arch/Eng/Quality/Gov | file:line | What's wrong | How to fix |
 
 Prioritize HIGH severity items first. Be specific and actionable.
 

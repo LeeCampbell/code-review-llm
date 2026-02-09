@@ -71,52 +71,61 @@ Each agent should:
 After all agents complete:
 
 1. **Collect findings** from all 4 pillars
-2. **Deduplicate** - Some issues may be flagged by multiple reviewers
-3. **Prioritize** - Sort by severity (HIGH → MEDIUM → LOW)
-4. **Summarize** - Provide executive summary
+2. **Deduplicate** — Some issues may be flagged by multiple reviewers
+3. **Aggregate maturity assessments** — Merge criteria assessments from all subagents into one maturity view
+4. **Determine maturity status per level:**
+   - All criteria ✅ → `pass` (✅)
+   - Mix of ✅ and ❌ → `partial` (⚠️)
+   - All criteria ❌ → `fail` (❌)
+   - Previous level not passed → `locked` (🔒)
+5. **Prioritize** findings by maturity level (HYG first), then severity (HIGH → LOW)
 
 ## Output Format
 
-### Executive Summary
+```markdown
+# Data Review — Maturity Assessment
 
-Brief overview of the review:
+## Maturity Status
 
-- Files reviewed
-- Total findings by severity
-- Top concerns across pillars
+| Level | Status | Summary |
+|-------|--------|---------|
+| Hygiene | ✅/⚠️/❌ | [one-line summary] |
+| Level 1 — Foundations | ✅/⚠️/❌/🔒 | [one-line summary] |
+| Level 2 — Operational Maturity | ✅/⚠️/❌/🔒 | [one-line summary] |
+| Level 3 — Excellence | ✅/⚠️/❌/🔒 | [one-line summary] |
 
-### Findings by Pillar
+**Immediate Action:** [Top hygiene failure if hygiene not passed, else top action from next achievable level]
 
-#### Architecture (Schema & Design)
+---
 
-[Findings from data-architecture agent]
+## Hygiene
 
-#### Engineering (Logic & Code)
+[If any failures: list them with severity, pillar, location, finding, recommendation]
+[If all pass: ✅ All hygiene criteria met]
 
-[Findings from data-engineering agent]
+## [Next Achievable Level] — Detailed Assessment
 
-#### Quality (Trust & Timeliness)
+For each criterion:
+- ✅ **[Criterion]** — Evidence: `file:line` description
+- ❌ **[Criterion]** — Missing: what should exist
+- ⚠️ **[Criterion]** — Partial: what's there and what's missing
 
-[Findings from data-quality agent]
+## Higher Levels — Preview
 
-#### Governance (Compliance & Lifecycle)
+> **Level [N+1]**: [Brief list of criteria — not yet assessed in detail]
+> **Level [N+2]**: [Brief list of criteria]
 
-[Findings from data-governance agent]
+---
 
-### Consolidated Action Items
+## Detailed Findings
 
-| Priority | Severity | Pillar | Location | Finding | Recommendation |
-| -------- | -------- | ------ | -------- | ------- | -------------- |
-| 1 | HIGH | ... | ... | ... | ... |
+| Priority | Severity | Maturity | Pillar | Location | Finding | Recommendation |
+|----------|----------|----------|--------|----------|---------|----------------|
 
-### What's Good
+## What's Good
 
-Note positive patterns observed:
-
-- Well-designed schemas
-- Good testing coverage
-- Clear documentation
-- Proper governance controls
+[Positive data patterns observed — well-designed schemas, good testing, clear documentation, proper governance]
+```
 
 ## Relationship to Other Reviews
 

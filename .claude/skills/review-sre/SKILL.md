@@ -41,39 +41,58 @@ Each agent should:
 After all agents complete:
 
 1. **Collect findings** from all 4 pillars
-2. **Deduplicate** - Some issues may be flagged by multiple reviewers
-3. **Prioritize** - Sort by severity (HIGH → MEDIUM → LOW)
-4. **Summarize** - Provide executive summary
+2. **Deduplicate** — Some issues may be flagged by multiple reviewers
+3. **Aggregate maturity assessments** — Merge criteria assessments from all subagents into one maturity view
+4. **Determine maturity status per level:**
+   - All criteria ✅ → `pass` (✅)
+   - Mix of ✅ and ❌ → `partial` (⚠️)
+   - All criteria ❌ → `fail` (❌)
+   - Previous level not passed → `locked` (🔒)
+5. **Prioritize** findings by maturity level (HYG first), then severity (HIGH → LOW)
 
 ## Output Format
 
-### Executive Summary
+```markdown
+# SRE Review — Maturity Assessment
 
-Brief overview of the review:
-- Files reviewed
-- Total findings by severity
-- Top concerns
+## Maturity Status
 
-### Findings by Pillar
+| Level | Status | Summary |
+|-------|--------|---------|
+| Hygiene | ✅/⚠️/❌ | [one-line summary] |
+| Level 1 — Foundations | ✅/⚠️/❌/🔒 | [one-line summary] |
+| Level 2 — Operational Maturity | ✅/⚠️/❌/🔒 | [one-line summary] |
+| Level 3 — Excellence | ✅/⚠️/❌/🔒 | [one-line summary] |
 
-#### Response
-[Findings from sre-response agent]
+**Immediate Action:** [Top hygiene failure if hygiene not passed, else top action from next achievable level]
 
-#### Observability
-[Findings from sre-observability agent]
+---
 
-#### Availability
-[Findings from sre-availability agent]
+## Hygiene
 
-#### Delivery
-[Findings from sre-delivery agent]
+[If any failures: list them with severity, category, location, finding, recommendation]
+[If all pass: ✅ All hygiene criteria met]
 
-### Consolidated Action Items
+## [Next Achievable Level] — Detailed Assessment
 
-| Priority | Finding | Location | Recommendation | Pillar |
-|----------|---------|----------|----------------|--------|
-| 1 | ... | ... | ... | ... |
+For each criterion:
+- ✅ **[Criterion]** — Evidence: `file:line` description
+- ❌ **[Criterion]** — Missing: what should exist
+- ⚠️ **[Criterion]** — Partial: what's there and what's missing
 
-### What's Good
+## Higher Levels — Preview
 
-Also note positive patterns observed - resilience patterns done well, good observability practices, etc.
+> **Level [N+1]**: [Brief list of criteria — not yet assessed in detail]
+> **Level [N+2]**: [Brief list of criteria]
+
+---
+
+## Detailed Findings
+
+| Priority | Severity | Maturity | Category | Location | Finding | Recommendation |
+|----------|----------|----------|----------|----------|---------|----------------|
+
+## What's Good
+
+[Positive SRE patterns observed — resilience patterns done well, good observability practices, etc.]
+```

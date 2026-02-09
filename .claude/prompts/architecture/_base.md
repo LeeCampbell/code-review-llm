@@ -102,13 +102,45 @@ These apply at all zoom levels:
 
 ---
 
+## Maturity Model
+
+Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+
+| Level | Criteria for Architecture |
+|-------|--------------------------|
+| **Hygiene** | No circular dependencies between modules. No shared mutable state across boundaries. No god classes or modules with unbounded responsibility. |
+| **Level 1 — Foundations** | Clear module boundaries with explicit public APIs. SRP followed at class/module level. Dependencies flow inward (infrastructure depends on domain, not vice versa). Architecture diagrams published and current. |
+| **Level 2 — Operational Maturity** | DDD tactical patterns applied (aggregates, value objects, domain events). Bounded contexts explicit with defined integration contracts. ADRs document key architectural decisions. Stability patterns (circuit breakers, bulkheads) applied at integration points. |
+| **Level 3 — Excellence** | Fitness functions validate architectural characteristics automatically. Context maps document cross-system relationships. EIP patterns govern inter-system messaging. Evolutionary architecture — changes are safe, incremental, and reversible. |
+
+### Tagging Rules
+
+For each finding, add a `Maturity` column to your output table:
+- `HYG` — Hygiene violation (baseline safety failure)
+- `L1` — Level 1 criteria gap
+- `L2` — Level 2 criteria gap
+- `L3` — Level 3 criteria gap
+
+### Criteria Assessment
+
+After your findings table, add a **Maturity Assessment** section:
+
+For each criterion at each level, state:
+- ✅ **Met** — Evidence found in code (cite location)
+- ❌ **Not met** — What's missing (cite what should exist)
+- ⚠️ **Partially met** — Some evidence, gaps remain
+
+Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+
+---
+
 ## Output Format
 
 Present findings as:
 
-| Severity | Zoom Level | Location | Finding | Recommendation |
-| -------- | ---------- | -------- | ------- | -------------- |
-| HIGH/MED/LOW | Code/Service/System/Landscape | file:line | What's wrong | How to fix |
+| Severity | Maturity | Zoom Level | Location | Finding | Recommendation |
+| -------- | -------- | ---------- | -------- | ------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Code/Service/System/Landscape | file:line | What's wrong | How to fix |
 
 Prioritize HIGH severity items first. Be specific and actionable.
 
