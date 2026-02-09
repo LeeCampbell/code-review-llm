@@ -59,53 +59,61 @@ Each agent should:
 After all agents complete:
 
 1. **Collect findings** from all 4 zoom levels
-2. **Deduplicate** - Some issues may be flagged by multiple levels
-3. **Prioritize** - Sort by severity (HIGH → MEDIUM → LOW)
-4. **Summarize** - Provide executive summary
+2. **Deduplicate** — Some issues may be flagged by multiple levels
+3. **Aggregate maturity assessments** — Merge criteria assessments from all subagents into one maturity view
+4. **Determine maturity status per level:**
+   - All criteria ✅ → `pass` (✅)
+   - Mix of ✅ and ❌ → `partial` (⚠️)
+   - All criteria ❌ → `fail` (❌)
+   - Previous level not passed → `locked` (🔒)
+5. **Prioritize** findings by maturity level (HYG first), then severity (HIGH → LOW)
 
 ## Output Format
 
-### Executive Summary
+```markdown
+# Architecture Review — Maturity Assessment
 
-Brief overview of the review:
+## Maturity Status
 
-- Files reviewed
-- Total findings by severity
-- Top concerns across zoom levels
-- Which zoom levels are applicable for this project
+| Level | Status | Summary |
+|-------|--------|---------|
+| Hygiene | ✅/⚠️/❌ | [one-line summary] |
+| Level 1 — Foundations | ✅/⚠️/❌/🔒 | [one-line summary] |
+| Level 2 — Operational Maturity | ✅/⚠️/❌/🔒 | [one-line summary] |
+| Level 3 — Excellence | ✅/⚠️/❌/🔒 | [one-line summary] |
 
-### Findings by Zoom Level
+**Immediate Action:** [Top hygiene failure if hygiene not passed, else top action from next achievable level]
 
-#### Code (Module Structure)
+---
 
-[Findings from arch-code agent]
+## Hygiene
 
-#### Service (Deployable Design)
+[If any failures: list them with severity, zoom level, location, finding, recommendation]
+[If all pass: ✅ All hygiene criteria met]
 
-[Findings from arch-service agent]
+## [Next Achievable Level] — Detailed Assessment
 
-#### System (Service Interactions)
+For each criterion:
+- ✅ **[Criterion]** — Evidence: `file:line` description
+- ❌ **[Criterion]** — Missing: what should exist
+- ⚠️ **[Criterion]** — Partial: what's there and what's missing
 
-[Findings from arch-system agent]
+## Higher Levels — Preview
 
-#### Landscape (Ecosystem)
+> **Level [N+1]**: [Brief list of criteria — not yet assessed in detail]
+> **Level [N+2]**: [Brief list of criteria]
 
-[Findings from arch-landscape agent]
+---
 
-### Consolidated Action Items
+## Detailed Findings
 
-| Priority | Severity | Zoom Level | Location | Finding | Recommendation |
-| -------- | -------- | ---------- | -------- | ------- | -------------- |
-| 1 | HIGH | ... | ... | ... | ... |
+| Priority | Severity | Maturity | Zoom Level | Location | Finding | Recommendation |
+|----------|----------|----------|------------|----------|---------|----------------|
 
-### What's Good
+## What's Good
 
-Note positive architectural patterns observed:
-
-- Clean separation of concerns
-- Well-defined bounded contexts
-- Proper use of stability patterns
-- Good documentation and ADRs
+[Positive architectural patterns observed]
+```
 
 ## Relationship to Other Reviews
 

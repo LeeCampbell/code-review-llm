@@ -74,12 +74,46 @@ A valid security finding must have:
 | **MEDIUM** | Requires conditions, significant impact | IDOR needing valid session, XSS in admin panel |
 | **LOW** | Limited impact, defense-in-depth | Information disclosure in error messages |
 
+## Maturity Model
+
+Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+
+| Level | Criteria for Security |
+|-------|----------------------|
+| **Hygiene** | No SQL injection or command injection vectors. No hardcoded secrets or credentials in source. Authentication enforced on all protected routes. No path traversal vulnerabilities. |
+| **Level 1 — Foundations** | Auth/authz model exists and is consistently applied. Input validation on all external entry points. Secrets managed via vault or environment (not code). Session management follows best practices (expiry, rotation). |
+| **Level 2 — Operational Maturity** | STRIDE threat model coverage across all components. Audit trails for security-relevant actions. Rate limiting on authentication and public endpoints. Least-privilege defaults for all roles. Threat modelling documented per service. |
+| **Level 3 — Excellence** | Automated security testing in CI pipeline (SAST/DAST). Crypto-agility — encryption algorithms configurable, not hardcoded. Security chaos testing (fault injection for auth failures). Dependency vulnerability scanning automated. |
+
+### Tagging Rules
+
+For each finding, add a `Maturity` column to your output table:
+
+- `HYG` — Hygiene violation (baseline safety failure)
+- `L1` — Level 1 criteria gap
+- `L2` — Level 2 criteria gap
+- `L3` — Level 3 criteria gap
+
+### Criteria Assessment
+
+After your findings table, add a **Maturity Assessment** section:
+
+For each criterion at each level, state:
+
+- ✅ **Met** — Evidence found in code (cite location)
+- ❌ **Not met** — What's missing (cite what should exist)
+- ⚠️ **Partially met** — Some evidence, gaps remain
+
+Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+
+---
+
 ## Output Format
 
 Present findings as:
 
-| Severity | Confidence | STRIDE | Location | Finding | Exploit Scenario | Recommendation |
-| -------- | ---------- | ------ | -------- | ------- | ---------------- | -------------- |
-| HIGH/MED/LOW | HIGH/MED | S/T/R/I/D/E | file:line | What's vulnerable | How to exploit | How to fix |
+| Severity | Maturity | Confidence | STRIDE | Location | Finding | Exploit Scenario | Recommendation |
+| -------- | -------- | ---------- | ------ | -------- | ------- | ---------------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | HIGH/MED | S/T/R/I/D/E | file:line | What's vulnerable | How to exploit | How to fix |
 
 Prioritize HIGH severity + HIGH confidence items first. Be specific and actionable.
