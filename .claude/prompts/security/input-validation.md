@@ -47,10 +47,14 @@ Injection attacks remain the most dangerous vulnerability class. SQL injection, 
 
 ### Deserialization
 
-- [ ] Is untrusted data deserialized?
-- [ ] Are safe deserialization methods used?
-- [ ] Is pickle/marshal avoided for untrusted data?
-- [ ] Are type constraints enforced?
+**Always unsafe** (arbitrary code execution by design):
+- [ ] Is `pickle` / `marshal` avoided for untrusted data? These execute arbitrary code on load — no safe mode exists.
+
+**Loader-dependent** (safe if configured correctly):
+- [ ] Is `yaml.safe_load()` used instead of `yaml.load()`?
+- [ ] Is XML parsed with external entity resolution disabled?
+- [ ] Are JSON parsers used with size/depth limits?
+- [ ] Are type constraints enforced on deserialized objects?
 
 ### Template Injection
 
