@@ -45,8 +45,8 @@ For DoS findings, require HIGH confidence (>80%) with clear exploit path:
 
 ## Output Format
 
-| Severity | Confidence | STRIDE | Location | Finding | Exploit Scenario | Recommendation |
-| -------- | ---------- | ------ | -------- | ------- | ---------------- | -------------- |
-| HIGH/MED/LOW | HIGH/MED | R or D | file:line | Issue | How to exploit | How to fix |
+| Severity | Maturity | Confidence | STRIDE | Location | Finding | Exploit Scenario | Recommendation |
+| -------- | -------- | ---------- | ------ | -------- | ------- | ---------------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | HIGH/MED | R or D | file:line | Issue | How to exploit | How to fix |
 
 Focus on HIGH severity + HIGH confidence items first. Be specific and actionable.

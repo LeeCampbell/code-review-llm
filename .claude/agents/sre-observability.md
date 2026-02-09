@@ -32,8 +32,8 @@ Read `.claude/prompts/sre/observability.md` for the complete review checklist.
 
 ## Output Format
 
-| Severity | Category | Location | Finding | Recommendation |
-|----------|----------|----------|---------|----------------|
-| HIGH/MED/LOW | Observability area | file:line | Issue found | How to fix |
+| Severity | Maturity | Category | Location | Finding | Recommendation |
+|----------|----------|----------|----------|---------|----------------|
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Observability area | file:line | Issue found | How to fix |
 
 Focus on HIGH severity items first. Be specific and actionable.

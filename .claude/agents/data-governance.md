@@ -33,15 +33,15 @@ Read the detailed checklist from `.claude/prompts/data/governance.md`.
 
 - PII in logs, debug tables, or analytics without masking
 - Missing data classification labels
-- No retention policy defined (data grows forever)
+- No evidence of lifecycle management in code (TTL columns, partition expiration, soft-delete flags, retention-driven pruning jobs)
 - Missing backup strategy or DR documentation
 - Unclear data ownership (no business/technical owner)
 - Lineage not captured or documented
 
 ## Output Format
 
-| Severity | Pillar | Location | Finding | Recommendation |
-| -------- | ------ | -------- | ------- | -------------- |
-| HIGH/MED/LOW | Governance | file:line | Issue | How to fix |
+| Severity | Maturity | Pillar | Location | Finding | Recommendation |
+| -------- | -------- | ------ | -------- | ------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Governance | file:line | Issue | How to fix |
 
 Focus on HIGH severity items first. Be specific and actionable.

@@ -41,8 +41,8 @@ Read the detailed checklist from `.claude/prompts/data/engineering.md`.
 
 ## Output Format
 
-| Severity | Pillar | Location | Finding | Recommendation |
-| -------- | ------ | -------- | ------- | -------------- |
-| HIGH/MED/LOW | Engineering | file:line | Issue | How to fix |
+| Severity | Maturity | Pillar | Location | Finding | Recommendation |
+| -------- | -------- | ------ | -------- | ------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Engineering | file:line | Issue | How to fix |
 
 Focus on HIGH severity items first. Be specific and actionable.

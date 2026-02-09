@@ -42,8 +42,8 @@ Read the detailed checklist from `.claude/prompts/architecture/system.md`.
 
 ## Output Format
 
-| Severity | Zoom Level | Location | Finding | Recommendation |
-| -------- | ---------- | -------- | ------- | -------------- |
-| HIGH/MED/LOW | System | file:line | Issue | How to fix |
+| Severity | Maturity | Zoom Level | Location | Finding | Recommendation |
+| -------- | -------- | ---------- | -------- | ------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | System | file:line | Issue | How to fix |
 
 Focus on HIGH severity items first. Be specific and actionable.
