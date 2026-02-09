@@ -31,8 +31,8 @@ Read `.claude/prompts/sre/response.md` for the complete review checklist.
 
 ## Output Format
 
-| Severity | Category | Location | Finding | Recommendation |
-|----------|----------|----------|---------|----------------|
-| HIGH/MED/LOW | Response area | file:line | Issue found | How to fix |
+| Severity | Maturity | Category | Location | Finding | Recommendation |
+|----------|----------|----------|----------|---------|----------------|
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Response area | file:line | Issue found | How to fix |
 
 Focus on HIGH severity items first. Be specific and actionable.

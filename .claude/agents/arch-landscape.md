@@ -51,8 +51,8 @@ For smaller projects (monolith, single service), this level may return few or no
 
 ## Output Format
 
-| Severity | Zoom Level | Location | Finding | Recommendation |
-| -------- | ---------- | -------- | ------- | -------------- |
-| HIGH/MED/LOW | Landscape | file:line or system-level | Issue | How to fix |
+| Severity | Maturity | Zoom Level | Location | Finding | Recommendation |
+| -------- | -------- | ---------- | -------- | ------- | -------------- |
+| HIGH/MED/LOW | HYG/L1/L2/L3 | Landscape | file:line or system-level | Issue | How to fix |
 
 Focus on HIGH severity items first. Be specific and actionable.

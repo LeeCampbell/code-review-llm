@@ -53,11 +53,11 @@ You can't fix what you can't see. Observability is about:
 - [ ] Can you see retry attempts and their outcomes?
 - [ ] Can you correlate logs, metrics, and traces?
 
-### Alerting Readiness
+### Signal Presence
 
-- [ ] Are there metrics suitable for alerting? (not too noisy, not too quiet)
-- [ ] Can you distinguish between symptoms and causes?
-- [ ] Are there leading indicators? (queue growth before timeout)
+- [ ] Do critical failure paths emit a metric or log that could be alerted on?
+- [ ] Can you distinguish between symptoms and causes from emitted signals?
+- [ ] Are there leading indicators emitted? (queue depth, connection pool usage, error rate changes)
 
 ## SEEMS Focus for Observability
 
