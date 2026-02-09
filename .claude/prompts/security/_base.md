@@ -76,35 +76,60 @@ A valid security finding must have:
 
 ## Maturity Model
 
-Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+### Hygiene Gate
 
-| Level | Criteria for Security |
-|-------|----------------------|
-| **Hygiene** | No SQL injection or command injection vectors. No hardcoded secrets or credentials in source. Authentication enforced on all protected routes. No path traversal vulnerabilities. |
-| **Level 1 — Foundations** | Auth/authz model exists and is consistently applied. Input validation on all external entry points. Secrets managed via vault or environment (not code). Session management follows best practices (expiry, rotation). |
-| **Level 2 — Operational Maturity** | STRIDE threat model coverage across all components. Audit trails for security-relevant actions. Rate limiting on authentication and public endpoints. Least-privilege defaults for all roles. Threat modelling documented per service. |
-| **Level 3 — Excellence** | Automated security testing in CI pipeline (SAST/DAST). Crypto-agility — encryption algorithms configurable, not hardcoded. Security chaos testing (fault injection for auth failures). Dependency vulnerability scanning automated. |
+The Hygiene flag identifies findings that could cause lasting damage to the organisation's reputation, trust, or legal standing. A Hygiene breach is a call to action — it trumps maturity progression.
+
+Any finding at any maturity level is promoted to Hygiene if it passes any of these tests:
+
+| Test | Question |
+|------|----------|
+| **Irreversible** | If this goes wrong, can the damage be undone? (data loss, leaked credentials, corrupted state, mass mis-communication) |
+| **Total** | Can this take down the entire service or cascade beyond its boundary? (thread exhaustion, deployment coupling, resource starvation) |
+| **Regulated** | Does this violate a legal or compliance obligation? (PII exposure, accessibility law, false claims, financial reporting) |
+
+Any "yes" promotes the finding to `HYG`, regardless of its maturity level.
+
+**Examples in Security:** User input concatenated into SQL or OS commands (irreversible — data breach or RCE). API keys or credentials committed in source code (irreversible — once pushed, compromised permanently). Authentication check missing on a destructive endpoint (irreversible).
+
+### Maturity Levels
+
+Levels are cumulative — each builds on the previous.
+
+| Level | Observable Criteria |
+|-------|-------------------|
+| **L1 — Foundations** | Authentication and authorisation are applied consistently on all protected paths. External input is validated before processing. Secrets are loaded from environment or external store, not source. Sessions have explicit expiry and rotation. |
+| **L2 — Hardening** | Security-relevant actions produce audit records. Exposed endpoints enforce rate limits. Roles default to least privilege; access is granted explicitly. Error responses do not leak internal state or stack traces. |
+| **L3 — Excellence** | Security checks run automatically in the build pipeline. Encryption parameters are configurable, not hardcoded. Dependencies are scanned for known vulnerabilities automatically. |
 
 ### Tagging Rules
 
 For each finding, add a `Maturity` column to your output table:
 
-- `HYG` — Hygiene violation (baseline safety failure)
+- `HYG` — Finding triggers the Hygiene gate (any test = yes). **Report these first.**
 - `L1` — Level 1 criteria gap
 - `L2` — Level 2 criteria gap
 - `L3` — Level 3 criteria gap
+
+A finding's maturity level reflects which level the practice belongs to. If the same finding also triggers the Hygiene gate, tag it `HYG` — the Hygiene flag overrides the level.
 
 ### Criteria Assessment
 
 After your findings table, add a **Maturity Assessment** section:
 
-For each criterion at each level, state:
+**First, assess the Hygiene gate:**
+- State whether any findings triggered the Hygiene gate
+- If yes, list each with the test it failed (Irreversible / Total / Regulated)
+- Hygiene breaches are the primary call to action — flag them for immediate attention
 
+**Then, assess each maturity level:**
+
+For each criterion at each level, state:
 - ✅ **Met** — Evidence found in code (cite location)
 - ❌ **Not met** — What's missing (cite what should exist)
 - ⚠️ **Partially met** — Some evidence, gaps remain
 
-Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+Start from L1 and work up. Stop providing detailed assessment after the first level with any ❌.
 
 ---
 

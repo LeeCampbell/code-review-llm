@@ -41,39 +41,64 @@ Use FaCTOR to verify the code preserves these resilience properties:
 
 ## Maturity Model
 
-Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+### Hygiene Gate
 
-| Level | Criteria for SRE |
-|-------|-----------------|
-| **Hygiene** | No unbounded retries. No missing timeouts on external calls. No silent failure swallowing (empty catch blocks, ignored errors). No unvalidated configuration. |
-| **Level 1 — Foundations** | Health checks present and meaningful. Structured logging with correlation IDs. Basic alerting on error rates. Error handling at service boundaries with clear error propagation. |
-| **Level 2 — Operational Maturity** | SLOs defined and measurable. Circuit breakers on external dependencies. Graceful degradation paths documented. Runbook references in alert definitions. Resilience modelling applied (SEEMS/FaCTOR analysis documented). |
-| **Level 3 — Excellence** | Error budgets tracked and driving decisions. Chaos testing evidence (failure injection, game days). Zero-downtime deployment pipeline. Capacity planning with load shedding and backpressure validated under stress. |
+The Hygiene flag identifies findings that could cause lasting damage to the organisation's reputation, trust, or legal standing. A Hygiene breach is a call to action — it trumps maturity progression.
+
+Any finding at any maturity level is promoted to Hygiene if it passes any of these tests:
+
+| Test | Question |
+|------|----------|
+| **Irreversible** | If this goes wrong, can the damage be undone? (data loss, leaked credentials, corrupted state, mass mis-communication) |
+| **Total** | Can this take down the entire service or cascade beyond its boundary? (thread exhaustion, deployment coupling, resource starvation) |
+| **Regulated** | Does this violate a legal or compliance obligation? (PII exposure, accessibility law, false claims, financial reporting) |
+
+Any "yes" promotes the finding to `HYG`, regardless of its maturity level.
+
+**Examples in SRE:** Retry loop with no bound or backoff that can exhaust thread pools under failure (total). Catch-all exception handler that returns success, masking data loss (irreversible). Health check hardcoded to return healthy, routing traffic to dead instances (total).
+
+### Maturity Levels
+
+Levels are cumulative — each builds on the previous.
+
+| Level | Observable Criteria |
+|-------|-------------------|
+| **L1 — Foundations** | Health checks reflect real readiness, not hardcoded values. Errors propagate with context sufficient for diagnosis. External calls have explicit timeouts. Logging is structured with request correlation. |
+| **L2 — Hardening** | Service-level objectives are defined and measurable from telemetry. External dependencies have failure isolation. Degradation paths exist — partial function over total failure. Alert definitions reference response procedures. |
+| **L3 — Excellence** | Deployment can proceed without downtime. Capacity limits are enforced under load. Failure scenarios are codified as automated tests. Resource consumption is bounded and observable. |
 
 ### Tagging Rules
 
 For each finding, add a `Maturity` column to your output table:
 
-- `HYG` — Hygiene violation (baseline safety failure)
+- `HYG` — Finding triggers the Hygiene gate (any test = yes). **Report these first.**
 - `L1` — Level 1 criteria gap
 - `L2` — Level 2 criteria gap
 - `L3` — Level 3 criteria gap
+
+A finding's maturity level reflects which level the practice belongs to. If the same finding also triggers the Hygiene gate, tag it `HYG` — the Hygiene flag overrides the level.
 
 ### Criteria Assessment
 
 After your findings table, add a **Maturity Assessment** section:
 
-For each criterion at each level, state:
+**First, assess the Hygiene gate:**
+- State whether any findings triggered the Hygiene gate
+- If yes, list each with the test it failed (Irreversible / Total / Regulated)
+- Hygiene breaches are the primary call to action — flag them for immediate attention
 
+**Then, assess each maturity level:**
+
+For each criterion at each level, state:
 - ✅ **Met** — Evidence found in code (cite location)
 - ❌ **Not met** — What's missing (cite what should exist)
 - ⚠️ **Partially met** — Some evidence, gaps remain
 
-Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+Start from L1 and work up. Stop providing detailed assessment after the first level with any ❌.
 
 ---
 
-### Output Format
+## Output Format
 
 Present findings as:
 
