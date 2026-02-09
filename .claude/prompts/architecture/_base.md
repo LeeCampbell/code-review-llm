@@ -104,33 +104,60 @@ These apply at all zoom levels:
 
 ## Maturity Model
 
-Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+### Hygiene Gate
 
-| Level | Criteria for Architecture |
-|-------|--------------------------|
-| **Hygiene** | No circular dependencies between modules. No shared mutable state across boundaries. No god classes or modules with unbounded responsibility. |
-| **Level 1 — Foundations** | Clear module boundaries with explicit public APIs. SRP followed at class/module level. Dependencies flow inward (infrastructure depends on domain, not vice versa). Architecture diagrams published and current. |
-| **Level 2 — Operational Maturity** | DDD tactical patterns applied (aggregates, value objects, domain events). Bounded contexts explicit with defined integration contracts. ADRs document key architectural decisions. Stability patterns (circuit breakers, bulkheads) applied at integration points. |
-| **Level 3 — Excellence** | Fitness functions validate architectural characteristics automatically. Context maps document cross-system relationships. EIP patterns govern inter-system messaging. Evolutionary architecture — changes are safe, incremental, and reversible. |
+The Hygiene flag identifies findings that could cause lasting damage to the organisation's reputation, trust, or legal standing. A Hygiene breach is a call to action — it trumps maturity progression.
+
+Any finding at any maturity level is promoted to Hygiene if it passes any of these tests:
+
+| Test | Question |
+|------|----------|
+| **Irreversible** | If this goes wrong, can the damage be undone? (data loss, leaked credentials, corrupted state, mass mis-communication) |
+| **Total** | Can this take down the entire service or cascade beyond its boundary? (thread exhaustion, deployment coupling, resource starvation) |
+| **Regulated** | Does this violate a legal or compliance obligation? (PII exposure, accessibility law, false claims, financial reporting) |
+
+Any "yes" promotes the finding to `HYG`, regardless of its maturity level.
+
+**Examples in Architecture:** Two services writing directly to the same database tables (irreversible corruption). Synchronous circular dependency chain where one failure cascades to all participants (total). Deployment requires all services released simultaneously (total).
+
+### Maturity Levels
+
+Levels are cumulative — each builds on the previous.
+
+| Level | Observable Criteria |
+|-------|-------------------|
+| **L1 — Foundations** | Module boundaries are explicit with defined public interfaces. Dependencies flow inward (infrastructure depends on domain, not vice versa). Components can be tested in isolation. |
+| **L2 — Hardening** | Integration contracts are defined between boundaries. Design decisions are documented with rationale and trade-offs. Failure at integration points is contained, not propagated. |
+| **L3 — Excellence** | Architectural constraints are validated automatically in CI. Cross-boundary relationships are documented and kept current. Changes can be made incrementally without coordinated deployment. |
 
 ### Tagging Rules
 
 For each finding, add a `Maturity` column to your output table:
-- `HYG` — Hygiene violation (baseline safety failure)
+
+- `HYG` — Finding triggers the Hygiene gate (any test = yes). **Report these first.**
 - `L1` — Level 1 criteria gap
 - `L2` — Level 2 criteria gap
 - `L3` — Level 3 criteria gap
 
+A finding's maturity level reflects which level the practice belongs to. If the same finding also triggers the Hygiene gate, tag it `HYG` — the Hygiene flag overrides the level.
+
 ### Criteria Assessment
 
 After your findings table, add a **Maturity Assessment** section:
+
+**First, assess the Hygiene gate:**
+- State whether any findings triggered the Hygiene gate
+- If yes, list each with the test it failed (Irreversible / Total / Regulated)
+- Hygiene breaches are the primary call to action — flag them for immediate attention
+
+**Then, assess each maturity level:**
 
 For each criterion at each level, state:
 - ✅ **Met** — Evidence found in code (cite location)
 - ❌ **Not met** — What's missing (cite what should exist)
 - ⚠️ **Partially met** — Some evidence, gaps remain
 
-Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+Start from L1 and work up. Stop providing detailed assessment after the first level with any ❌.
 
 ---
 

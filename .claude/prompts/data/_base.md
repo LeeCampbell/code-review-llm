@@ -79,35 +79,60 @@ This review framework synthesizes principles from:
 
 ## Maturity Model
 
-Tag each finding with the maturity level it belongs to. Levels are cumulative — each requires the previous.
+### Hygiene Gate
 
-| Level | Criteria for Data |
-|-------|------------------|
-| **Hygiene** | No missing PII masking in outputs or logs. No breaking schema changes without versioning. No silent data loss (dropped records without error). No unhandled nulls in joins or aggregations. |
-| **Level 1 — Foundations** | Schema documented with field descriptions. Ownership defined for each data asset. Basic data validation (type checks, not-null constraints, referential integrity). Idempotent processing for all pipelines. |
-| **Level 2 — Operational Maturity** | Freshness SLOs defined and monitored. Data contracts between producers and consumers. Lineage tracked from source to consumption. Quality monitoring with automated anomaly detection. Reconciliation between source and target. |
-| **Level 3 — Excellence** | Bitemporality for audit-critical data. Self-serve discovery catalog. Automated reconciliation with alerting. Data mesh patterns — domain-owned data products with interoperability standards. |
+The Hygiene flag identifies findings that could cause lasting damage to the organisation's reputation, trust, or legal standing. A Hygiene breach is a call to action — it trumps maturity progression.
+
+Any finding at any maturity level is promoted to Hygiene if it passes any of these tests:
+
+| Test | Question |
+|------|----------|
+| **Irreversible** | If this goes wrong, can the damage be undone? (data loss, leaked credentials, corrupted state, mass mis-communication) |
+| **Total** | Can this take down the entire service or cascade beyond its boundary? (thread exhaustion, deployment coupling, resource starvation) |
+| **Regulated** | Does this violate a legal or compliance obligation? (PII exposure, accessibility law, false claims, financial reporting) |
+
+Any "yes" promotes the finding to `HYG`, regardless of its maturity level.
+
+**Examples in Data:** PII written to application logs or uncontrolled outputs (regulated — cannot be unlogged from aggregated stores). Pipeline silently drops records on schema mismatch with no error (irreversible — undetected data loss). Migration script with unbounded DELETE or TRUNCATE (irreversible).
+
+### Maturity Levels
+
+Levels are cumulative — each builds on the previous.
+
+| Level | Observable Criteria |
+|-------|-------------------|
+| **L1 — Foundations** | Schemas are documented with field-level descriptions. Each data asset has a defined owner. Input data is validated (types, constraints, referential integrity). Processing is idempotent — re-runs produce identical results. |
+| **L2 — Hardening** | Freshness expectations are defined and monitored. Contracts exist between producers and consumers. Data can be traced from source to destination. Quality is monitored with automated checks. Source and target are reconciled. |
+| **L3 — Excellence** | Temporal changes are tracked for audit-critical data. Data assets are discoverable without tribal knowledge. Reconciliation runs automatically with alerting on divergence. |
 
 ### Tagging Rules
 
 For each finding, add a `Maturity` column to your output table:
 
-- `HYG` — Hygiene violation (baseline safety failure)
+- `HYG` — Finding triggers the Hygiene gate (any test = yes). **Report these first.**
 - `L1` — Level 1 criteria gap
 - `L2` — Level 2 criteria gap
 - `L3` — Level 3 criteria gap
+
+A finding's maturity level reflects which level the practice belongs to. If the same finding also triggers the Hygiene gate, tag it `HYG` — the Hygiene flag overrides the level.
 
 ### Criteria Assessment
 
 After your findings table, add a **Maturity Assessment** section:
 
-For each criterion at each level, state:
+**First, assess the Hygiene gate:**
+- State whether any findings triggered the Hygiene gate
+- If yes, list each with the test it failed (Irreversible / Total / Regulated)
+- Hygiene breaches are the primary call to action — flag them for immediate attention
 
+**Then, assess each maturity level:**
+
+For each criterion at each level, state:
 - ✅ **Met** — Evidence found in code (cite location)
 - ❌ **Not met** — What's missing (cite what should exist)
 - ⚠️ **Partially met** — Some evidence, gaps remain
 
-Start from Hygiene and work up. Stop providing detailed assessment after the first level with any ❌.
+Start from L1 and work up. Stop providing detailed assessment after the first level with any ❌.
 
 ---
 
