@@ -31,8 +31,8 @@ Review the code for:
 
 ## Framework Reference
 
-Apply the STRIDE + DREAD framework from `.claude/prompts/security/_base.md`.
-Read `.claude/prompts/security/authn-authz.md` for the complete review checklist.
+Apply the STRIDE + DREAD framework from `.claude/prompts/donkey-dev/security/_base.md`.
+Read `.claude/prompts/donkey-dev/security/authn-authz.md` for the complete review checklist.
 
 ## Confidence Threshold
 

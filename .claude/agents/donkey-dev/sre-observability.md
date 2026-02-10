@@ -19,7 +19,7 @@ Review the code for:
 
 ## Framework Reference
 
-Apply the SEEMS/FaCTOR framework from `.claude/prompts/sre/_base.md` with emphasis on:
+Apply the SEEMS/FaCTOR framework from `.claude/prompts/donkey-dev/sre/_base.md` with emphasis on:
 - **SEEMS → Excessive load**: Are load metrics visible?
 - **SEEMS → Excessive latency**: Can you identify slow operations?
 - **SEEMS → Misconfiguration**: Are config values observable?
@@ -28,7 +28,7 @@ Apply the SEEMS/FaCTOR framework from `.claude/prompts/sre/_base.md` with emphas
 
 ## Detailed Guidance
 
-Read `.claude/prompts/sre/observability.md` for the complete review checklist.
+Read `.claude/prompts/donkey-dev/sre/observability.md` for the complete review checklist.
 
 ## Output Format
 

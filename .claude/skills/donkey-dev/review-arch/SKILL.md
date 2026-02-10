@@ -48,8 +48,8 @@ Spawn **4 subagents in parallel** to analyze different zoom levels:
 
 Each agent should:
 
-- Read the base framework from `.claude/prompts/architecture/_base.md`
-- Read their specific checklist from `.claude/prompts/architecture/[level].md`
+- Read the base framework from `.claude/prompts/donkey-dev/architecture/_base.md`
+- Read their specific checklist from `.claude/prompts/donkey-dev/architecture/[level].md`
 - Review the code against their checklist
 - Return findings in standard table format
 - Note: Landscape level may return "no findings" for smaller projects - this is expected
@@ -119,6 +119,6 @@ For each criterion:
 
 This architecture review focuses on **design-time decisions**. It complements:
 
-- **SRE Review** (`/review-sre`): Focuses on run-time reliability
-- **Security Review** (`/review-security`): Focuses on threat modeling
-- **Data Review** (`/review-data`): Focuses on data products and governance
+- **SRE Review** (`/donkey-dev:review-sre`): Focuses on run-time reliability
+- **Security Review** (`/donkey-dev:review-security`): Focuses on threat modeling
+- **Data Review** (`/donkey-dev:review-data`): Focuses on data products and governance

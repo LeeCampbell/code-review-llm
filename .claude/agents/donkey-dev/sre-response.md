@@ -19,7 +19,7 @@ Review the code for:
 
 ## Framework Reference
 
-Apply the SEEMS/FaCTOR framework from `.claude/prompts/sre/_base.md` with emphasis on:
+Apply the SEEMS/FaCTOR framework from `.claude/prompts/donkey-dev/sre/_base.md` with emphasis on:
 - **SEEMS → Misconfiguration**: Can config errors be diagnosed?
 - **SEEMS → Shared fate**: When dependencies fail, is it clear which one?
 - **FaCTOR → Fault isolation**: Are failures attributed correctly?
@@ -27,7 +27,7 @@ Apply the SEEMS/FaCTOR framework from `.claude/prompts/sre/_base.md` with emphas
 
 ## Detailed Guidance
 
-Read `.claude/prompts/sre/response.md` for the complete review checklist.
+Read `.claude/prompts/donkey-dev/sre/response.md` for the complete review checklist.
 
 ## Output Format
 

@@ -32,7 +32,7 @@ Spawn **4 subagents in parallel** to review different aspects:
 4. **sre-delivery** - Deployment safety, rollback, feature flags
 
 Each agent should:
-- Read the relevant prompt from `.claude/prompts/sre/`
+- Read the relevant prompt from `.claude/prompts/donkey-dev/sre/`
 - Review the code against their checklist
 - Return findings in table format
 

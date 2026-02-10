@@ -26,8 +26,8 @@ Review the code for:
 
 ## Framework Reference
 
-Read the base framework from `.claude/prompts/data/_base.md`.
-Read the detailed checklist from `.claude/prompts/data/governance.md`.
+Read the base framework from `.claude/prompts/donkey-dev/data/_base.md`.
+Read the detailed checklist from `.claude/prompts/donkey-dev/data/governance.md`.
 
 ## What to Look For
 

@@ -25,10 +25,10 @@ Map domain codes to their review skills:
 
 | Code | Skill | File | Output |
 |------|-------|------|--------|
-| `ARC` | Architecture | `.claude/skills/review-arch/SKILL.md` | `arc.md` |
-| `SRE` | SRE | `.claude/skills/review-sre/SKILL.md` | `sre.md` |
-| `SEC` | Security | `.claude/skills/review-security/SKILL.md` | `sec.md` |
-| `DAT` | Data | `.claude/skills/review-data/SKILL.md` | `dat.md` |
+| `ARC` | Architecture | `.claude/skills/donkey-dev/review-arch/SKILL.md` | `arc.md` |
+| `SRE` | SRE | `.claude/skills/donkey-dev/review-sre/SKILL.md` | `sre.md` |
+| `SEC` | Security | `.claude/skills/donkey-dev/review-security/SKILL.md` | `sec.md` |
+| `DAT` | Data | `.claude/skills/donkey-dev/review-data/SKILL.md` | `dat.md` |
 
 ### Step 2: Resolve Batch Name
 
@@ -55,10 +55,10 @@ Spawn one Task agent per requested domain, **all in parallel** using `subagent_t
 
 | Domain | Task Prompt |
 |--------|-------------|
-| `ARC` | "You are running an architecture review. Read `.claude/skills/review-arch/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
-| `SRE` | "You are running an SRE review. Read `.claude/skills/review-sre/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
-| `SEC` | "You are running a security review. Read `.claude/skills/review-security/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
-| `DAT` | "You are running a data review. Read `.claude/skills/review-data/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
+| `ARC` | "You are running an architecture review. Read `.claude/skills/donkey-dev/review-arch/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
+| `SRE` | "You are running an SRE review. Read `.claude/skills/donkey-dev/review-sre/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
+| `SEC` | "You are running a security review. Read `.claude/skills/donkey-dev/review-security/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
+| `DAT` | "You are running a data review. Read `.claude/skills/donkey-dev/review-data/SKILL.md` and follow its process exactly against `<path>`. Return the complete report including the Maturity Status table." |
 
 ### Step 5: Write Sub-Reports
 
@@ -168,16 +168,16 @@ Only list files that were actually written.
 
 | Code | Full Name | Skill Path |
 |------|-----------|------------|
-| `ARC` | Architecture | `/review-arch` |
-| `SRE` | SRE | `/review-sre` |
-| `SEC` | Security | `/review-security` |
-| `DAT` | Data | `/review-data` |
+| `ARC` | Architecture | `/donkey-dev:review-arch` |
+| `SRE` | SRE | `/donkey-dev:review-sre` |
+| `SEC` | Security | `/donkey-dev:review-security` |
+| `DAT` | Data | `/donkey-dev:review-data` |
 
 ## Relationship to Domain Reviews
 
-This batch orchestrator **delegates to** the 4 domain review skills. It does not duplicate their logic. Changes to individual domain skills are automatically picked up by `/review-all`.
+This batch orchestrator **delegates to** the 4 domain review skills. It does not duplicate their logic. Changes to individual domain skills are automatically picked up by `/donkey-dev:review-all`.
 
-- **Architecture** (`/review-arch`): C4 zoom levels — Code, Service, System, Landscape
-- **SRE** (`/review-sre`): ROAD framework — Response, Observability, Availability, Delivery
-- **Security** (`/review-security`): STRIDE threat modeling
-- **Data** (`/review-data`): DAMA DMBOK / Data Mesh pillars
+- **Architecture** (`/donkey-dev:review-arch`): C4 zoom levels — Code, Service, System, Landscape
+- **SRE** (`/donkey-dev:review-sre`): ROAD framework — Response, Observability, Availability, Delivery
+- **Security** (`/donkey-dev:review-security`): STRIDE threat modeling
+- **Data** (`/donkey-dev:review-data`): DAMA DMBOK / Data Mesh pillars

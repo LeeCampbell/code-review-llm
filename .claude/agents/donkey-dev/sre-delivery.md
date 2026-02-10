@@ -19,7 +19,7 @@ Review the code for:
 
 ## Framework Reference
 
-Apply the SEEMS/FaCTOR framework from `.claude/prompts/sre/_base.md` with emphasis on:
+Apply the SEEMS/FaCTOR framework from `.claude/prompts/donkey-dev/sre/_base.md` with emphasis on:
 - **SEEMS → Misconfiguration**: Can a config change cause outage?
 - **SEEMS → Shared fate**: Coordinated deployments required?
 - **FaCTOR → Output correctness**: Consistent behavior during rollout?
@@ -27,7 +27,7 @@ Apply the SEEMS/FaCTOR framework from `.claude/prompts/sre/_base.md` with emphas
 
 ## Detailed Guidance
 
-Read `.claude/prompts/sre/delivery.md` for the complete review checklist.
+Read `.claude/prompts/donkey-dev/sre/delivery.md` for the complete review checklist.
 
 ## Output Format
 

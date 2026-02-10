@@ -29,8 +29,8 @@ Review the code for:
 
 ## Framework Reference
 
-Read the base framework from `.claude/prompts/architecture/_base.md`.
-Read the detailed checklist from `.claude/prompts/architecture/landscape.md`.
+Read the base framework from `.claude/prompts/donkey-dev/architecture/_base.md`.
+Read the detailed checklist from `.claude/prompts/donkey-dev/architecture/landscape.md`.
 
 ## What to Look For
 

@@ -61,8 +61,8 @@ Spawn **4 subagents in parallel** to analyze different aspects:
 
 Each agent should:
 
-- Read the base framework from `.claude/prompts/data/_base.md`
-- Read their specific checklist from `.claude/prompts/data/[pillar].md`
+- Read the base framework from `.claude/prompts/donkey-dev/data/_base.md`
+- Read their specific checklist from `.claude/prompts/donkey-dev/data/[pillar].md`
 - Review the code against their checklist
 - Return findings in standard table format
 

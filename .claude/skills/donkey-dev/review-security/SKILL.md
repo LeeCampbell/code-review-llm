@@ -48,8 +48,8 @@ Spawn **4 subagents in parallel** to analyze different threat categories:
 
 Each agent should:
 
-- Read the base framework from `.claude/prompts/security/_base.md`
-- Read their specific checklist from `.claude/prompts/security/[pillar].md`
+- Read the base framework from `.claude/prompts/donkey-dev/security/_base.md`
+- Read their specific checklist from `.claude/prompts/donkey-dev/security/[pillar].md`
 - Review the code against their checklist
 - Return findings meeting the confidence threshold (>50%)
 

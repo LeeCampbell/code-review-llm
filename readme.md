@@ -8,10 +8,10 @@ Each domain runs 4 specialized subagents in parallel, producing a consolidated r
 
 | Domain | Command | Framework | What It Evaluates |
 |--------|---------|-----------|-------------------|
-| **Architecture** | `/review-arch` | C4 zoom levels (Code, Service, System, Landscape) | SOLID, DDD, Clean Architecture, Release It! stability patterns, EIP, ADR compliance |
-| **SRE** | `/review-sre` | ROAD (Response, Observability, Availability, Delivery) | SEEMS/FaCTOR failure analysis, SLOs, circuit breakers, deployment safety |
-| **Security** | `/review-security` | STRIDE threat modeling | Authentication, data protection, input validation, audit trails, DoS resilience |
-| **Data** | `/review-data` | DAMA DMBOK + Data Mesh | Schema design, data contracts, quality SLOs, PII governance, lineage |
+| **Architecture** | `/donkey-dev:review-arch` | C4 zoom levels (Code, Service, System, Landscape) | SOLID, DDD, Clean Architecture, Release It! stability patterns, EIP, ADR compliance |
+| **SRE** | `/donkey-dev:review-sre` | ROAD (Response, Observability, Availability, Delivery) | SEEMS/FaCTOR failure analysis, SLOs, circuit breakers, deployment safety |
+| **Security** | `/donkey-dev:review-security` | STRIDE threat modeling | Authentication, data protection, input validation, audit trails, DoS resilience |
+| **Data** | `/donkey-dev:review-data` | DAMA DMBOK + Data Mesh | Schema design, data contracts, quality SLOs, PII governance, lineage |
 
 ### Coming Soon
 
@@ -23,10 +23,10 @@ Each domain runs 4 specialized subagents in parallel, producing a consolidated r
 ## How It Works
 
 ```
-/review-arch src/                    # Review architecture of src/
-/review-sre src/api/                 # SRE review of the API layer
-/review-security .                   # Security review of entire project
-/review-data src/pipelines/          # Data review of pipeline code
+/donkey-dev:review-arch src/                    # Review architecture of src/
+/donkey-dev:review-sre src/api/                 # SRE review of the API layer
+/donkey-dev:review-security .                   # Security review of entire project
+/donkey-dev:review-data src/pipelines/          # Data review of pipeline code
 ```
 
 Each review command:
@@ -56,7 +56,7 @@ Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and run fr
 cp -r .claude/ /path/to/your/project/.claude/
 
 # Run a review
-claude "/review-arch src/"
+claude "/donkey-dev:review-arch src/"
 ```
 
 ### With Docker + Ollama (Local)
@@ -112,41 +112,44 @@ docker container rm ollama-deepseek    # Remove to reclaim disk
 
 ```
 .claude/
-├── prompts/                    # Shared review checklists (LLM-agnostic)
-│   ├── architecture/
-│   │   ├── _base.md            # C4 zoom levels, glossary, severity definitions
-│   │   ├── code.md             # SOLID, DDD tactical, testability, naming
-│   │   ├── service.md          # Bounded contexts, layering, deployability
-│   │   ├── system.md           # Stability patterns, API contracts, coupling
-│   │   └── landscape.md        # EIP, context maps, ADRs, tech-spec traceability
-│   ├── sre/
-│   │   ├── _base.md            # SEEMS/FaCTOR framework, terminology
-│   │   ├── response.md         # Incident handling, runbook readiness
-│   │   ├── observability.md    # Logging, metrics, tracing, SLIs
-│   │   ├── availability.md     # SLOs, circuit breakers, resilience
-│   │   └── delivery.md         # Deployment safety, rollback, feature flags
-│   ├── security/
-│   │   ├── _base.md            # STRIDE categories, DREAD-lite scoring
-│   │   ├── authn-authz.md      # Authentication, authorization, sessions
-│   │   ├── data-protection.md  # Encryption, secrets, data integrity
-│   │   ├── input-validation.md # SQL injection, XSS, command injection
-│   │   └── audit-resilience.md # Audit trails, rate limiting, DoS
-│   └── data/
-│       ├── _base.md            # Data quality dimensions, terminology
-│       ├── architecture.md     # Schema design, interoperability, contracts
-│       ├── engineering.md      # Logic verification, performance, error handling
-│       ├── quality.md          # Freshness SLOs, accuracy, observability
-│       └── governance.md       # PII classification, retention, lineage
-├── agents/                     # Subagent definitions (Claude Code)
-│   ├── arch-{code,service,system,landscape}.md
-│   ├── sre-{response,observability,availability,delivery}.md
-│   ├── security-{authn-authz,data-protection,input-validation,audit-resilience}.md
-│   └── data-{architecture,engineering,quality,governance}.md
-└── skills/                     # Review orchestrators (Claude Code)
-    ├── review-arch/SKILL.md
-    ├── review-sre/SKILL.md
-    ├── review-security/SKILL.md
-    └── review-data/SKILL.md
+├── prompts/
+│   └── donkey-dev/             # Shared review checklists (LLM-agnostic)
+│       ├── architecture/
+│       │   ├── _base.md            # C4 zoom levels, glossary, severity definitions
+│       │   ├── code.md             # SOLID, DDD tactical, testability, naming
+│       │   ├── service.md          # Bounded contexts, layering, deployability
+│       │   ├── system.md           # Stability patterns, API contracts, coupling
+│       │   └── landscape.md        # EIP, context maps, ADRs, tech-spec traceability
+│       ├── sre/
+│       │   ├── _base.md            # SEEMS/FaCTOR framework, terminology
+│       │   ├── response.md         # Incident handling, runbook readiness
+│       │   ├── observability.md    # Logging, metrics, tracing, SLIs
+│       │   ├── availability.md     # SLOs, circuit breakers, resilience
+│       │   └── delivery.md         # Deployment safety, rollback, feature flags
+│       ├── security/
+│       │   ├── _base.md            # STRIDE categories, DREAD-lite scoring
+│       │   ├── authn-authz.md      # Authentication, authorization, sessions
+│       │   ├── data-protection.md  # Encryption, secrets, data integrity
+│       │   ├── input-validation.md # SQL injection, XSS, command injection
+│       │   └── audit-resilience.md # Audit trails, rate limiting, DoS
+│       └── data/
+│           ├── _base.md            # Data quality dimensions, terminology
+│           ├── architecture.md     # Schema design, interoperability, contracts
+│           ├── engineering.md      # Logic verification, performance, error handling
+│           ├── quality.md          # Freshness SLOs, accuracy, observability
+│           └── governance.md       # PII classification, retention, lineage
+├── agents/
+│   └── donkey-dev/             # Subagent definitions (Claude Code)
+│       ├── arch-{code,service,system,landscape}.md
+│       ├── sre-{response,observability,availability,delivery}.md
+│       ├── security-{authn-authz,data-protection,input-validation,audit-resilience}.md
+│       └── data-{architecture,engineering,quality,governance}.md
+└── skills/
+    └── donkey-dev/             # Review orchestrators (Claude Code)
+        ├── review-arch/SKILL.md
+        ├── review-sre/SKILL.md
+        ├── review-security/SKILL.md
+        └── review-data/SKILL.md
 
 .devcontainer/                  # Docker + Ollama local setup
 ├── docker-compose.yml
