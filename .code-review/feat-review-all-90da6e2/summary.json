@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "timestamp": "2026-02-10T02:16:00Z",
+    "commit": "90da6e297bb507b119835604806b6c3031c6e59f",
+    "branch": "feat/review-all",
+    "batch_name": "feat-review-all-90da6e2",
+    "path": "."
+  },
+  "domains": {
+    "ARC": {
+      "hygiene": "partial",
+      "level1": "fail",
+      "level2": "locked",
+      "level3": "locked",
+      "immediate_action": "Extract the hardcoded Ollama service URL from python/code_review.py into environment configuration, and remove the embedded production SQL containing real database schema names from the committed Python source."
+    },
+    "SRE": {
+      "hygiene": "partial",
+      "level1": "fail",
+      "level2": "locked",
+      "level3": "locked",
+      "immediate_action": "Add a timeout to the requests.post() call in python/code_review.py:32. Without a timeout, a hung Ollama service will block the caller indefinitely."
+    },
+    "SEC": {
+      "hygiene": "partial",
+      "level1": "fail",
+      "level2": "locked",
+      "level3": "locked",
+      "immediate_action": "Remove hardcoded production database schema names (CHU_PROD, LLS_PROD, POK_PROD, CAM_PROD) and PII-bearing SQL queries from committed source code."
+    },
+    "DAT": {
+      "hygiene": "fail",
+      "level1": "locked",
+      "level2": "locked",
+      "level3": "locked",
+      "immediate_action": "Fix the documented data-loss bug in the big-win threshold filter and implement PII masking for USER_ID and address data in the embedded SQL and stored result outputs."
+    }
+  }
+}
